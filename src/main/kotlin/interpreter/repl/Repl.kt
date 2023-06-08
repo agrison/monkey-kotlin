@@ -14,7 +14,7 @@ class Repl {
         val env = Environment.newEnvironment()
 
         while (true) {
-            System.out.print(PROMPT)
+            print(PROMPT)
             val scanned = scanner.nextLine()
             if (scanned == ":q") {
                 return
@@ -34,7 +34,7 @@ class Repl {
         }
     }
 
-    fun printParseErrors(errors: List<String>) {
+    private fun printParseErrors(errors: List<String>) {
         println(MONKEY_FACE)
         println("Woops! We ran into some monkey business here!")
         println(" parser errors: ")

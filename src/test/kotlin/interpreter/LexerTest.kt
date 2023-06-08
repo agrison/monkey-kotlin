@@ -29,7 +29,7 @@ if (5 < 10) {
 "foobar"
 "foo bar"
 [1, 2];
-{"foo": "bar"}""";
+{"foo": "bar"}"""
 
         val lexer = Lexer.new(input)
         val tests = mutableListOf(

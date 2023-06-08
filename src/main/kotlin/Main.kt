@@ -1,7 +1,7 @@
 import interpreter.repl.Repl
 
-fun main(args: Array<String>) {
-    println("Hello ! This is the Monkey programming language!")
+fun main() {
+    println("Hello ${System.getProperty("user.name")}! This is the Monkey programming language!")
     println("Feel Free to type in commands\n")
 
     val repl = Repl()

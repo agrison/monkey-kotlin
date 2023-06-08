@@ -389,7 +389,7 @@ let f = fn(x) {
 };
 f(10);""", 20
                 )
-            );
+            )
         }
 
         @JvmStatic
@@ -416,7 +416,7 @@ if (10 > 1) {
                 Arguments.of("foobar", "identifier not found: foobar"),
                 Arguments.of("{\"name\": \"Monkey\"}[fn(x) { x }];", "unusable as hash key: FUNCTION"),
                 Arguments.of("999[1]", "index operator not supported: INTEGER"),
-            );
+            )
         }
 
         @JvmStatic
@@ -440,7 +440,7 @@ if (10 > 1) {
                 Arguments.of("rest([])", null),
                 Arguments.of("push([], 1)", listOf(1)),
                 Arguments.of("push(1, 1)", "argument to `push` must be ARRAY, got INTEGER"),
-            );
+            )
         }
     }
 }

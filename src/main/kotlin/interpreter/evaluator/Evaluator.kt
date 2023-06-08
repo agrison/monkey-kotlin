@@ -102,7 +102,7 @@ class Evaluator {
         }
     }
 
-    fun evalProgram(program: interpreter.ast.Program, env: Environment): MonkeyObject {
+    private fun evalProgram(program: interpreter.ast.Program, env: Environment): MonkeyObject {
         var result: MonkeyObject = MNonInitialized()
 
         program.statements.forEach { statement ->
@@ -116,7 +116,7 @@ class Evaluator {
         return result
     }
 
-    fun evalBlockStatement(block: interpreter.ast.BlockStatement, env: Environment): MonkeyObject {
+    private fun evalBlockStatement(block: interpreter.ast.BlockStatement, env: Environment): MonkeyObject {
         var result: MonkeyObject = MNonInitialized()
 
         block.statements.forEach { statement ->
@@ -132,7 +132,7 @@ class Evaluator {
         return result
     }
 
-    fun evalPrefixExpression(operator: String, right: MonkeyObject): MonkeyObject {
+    private fun evalPrefixExpression(operator: String, right: MonkeyObject): MonkeyObject {
         return when (operator) {
             "!" -> evalBangOperatorExpression(right)
             "-" -> evalMinusPrefixOperatorExpression(right)
@@ -140,7 +140,7 @@ class Evaluator {
         }
     }
 
-    fun evalInfixExpression(operator: String, left: MonkeyObject, right: MonkeyObject): MonkeyObject {
+    private fun evalInfixExpression(operator: String, left: MonkeyObject, right: MonkeyObject): MonkeyObject {
         return when {
             left.type() == INTEGER_OBJ && right.type() == INTEGER_OBJ -> evalIntegerInfixExpression(
                 operator,
@@ -159,7 +159,7 @@ class Evaluator {
         }
     }
 
-    fun evalBangOperatorExpression(right: MonkeyObject): MonkeyObject {
+    private fun evalBangOperatorExpression(right: MonkeyObject): MonkeyObject {
         return when (right) {
             TRUE -> FALSE
             FALSE -> TRUE
@@ -168,7 +168,7 @@ class Evaluator {
         }
     }
 
-    fun evalMinusPrefixOperatorExpression(right: MonkeyObject): MonkeyObject {
+    private fun evalMinusPrefixOperatorExpression(right: MonkeyObject): MonkeyObject {
         if (right.type() != INTEGER_OBJ) {
             return newError("unknown operator: -${right.type()}")
         }
@@ -176,7 +176,7 @@ class Evaluator {
         return MInteger(0 - (right as MInteger).value)
     }
 
-    fun evalIntegerInfixExpression(operator: String, left: MonkeyObject, right: MonkeyObject): MonkeyObject {
+    private fun evalIntegerInfixExpression(operator: String, left: MonkeyObject, right: MonkeyObject): MonkeyObject {
         val leftVal = (left as MInteger).value
         val rightVal = (right as MInteger).value
 
@@ -193,7 +193,7 @@ class Evaluator {
         }
     }
 
-    fun evalStringInfixExpression(operator: String, left: MonkeyObject, right: MonkeyObject): MonkeyObject {
+    private fun evalStringInfixExpression(operator: String, left: MonkeyObject, right: MonkeyObject): MonkeyObject {
         val leftVal = (left as MString).value
         val intRightVal = if (right is MInteger) right.value else null
         val rightVal = if (right is MString) right.value else ""
@@ -209,7 +209,7 @@ class Evaluator {
         }
     }
 
-    fun evalIfExpression(ie: interpreter.ast.IfExpression, env: Environment): MonkeyObject {
+    private fun evalIfExpression(ie: interpreter.ast.IfExpression, env: Environment): MonkeyObject {
         val condition = eval(ie.condition, env)
         if (isError(condition)) {
             return condition
@@ -224,7 +224,7 @@ class Evaluator {
         }
     }
 
-    fun evalIdentifier(node: interpreter.ast.Identifier, env: Environment): MonkeyObject {
+    private fun evalIdentifier(node: interpreter.ast.Identifier, env: Environment): MonkeyObject {
         val value = env[node.value]
         if (value != null) {
             return value
@@ -247,15 +247,15 @@ class Evaluator {
         }
     }
 
-    fun newError(s: String): MonkeyObject {
+    private fun newError(s: String): MonkeyObject {
         return MError(s)
     }
 
-    fun isError(obj: MonkeyObject): kotlin.Boolean {
+    private fun isError(obj: MonkeyObject): kotlin.Boolean {
         return obj.type() == ERROR_OBJ
     }
 
-    fun evalExpressions(exps: List<interpreter.ast.Expression>, env: Environment): List<MonkeyObject> {
+    private fun evalExpressions(exps: List<interpreter.ast.Expression>, env: Environment): List<MonkeyObject> {
         val result = mutableListOf<MonkeyObject>()
 
         exps.forEach { exp ->
@@ -269,7 +269,7 @@ class Evaluator {
         return result
     }
 
-    fun applyFunction(fn: MonkeyObject, args: List<MonkeyObject>): MonkeyObject {
+    private fun applyFunction(fn: MonkeyObject, args: List<MonkeyObject>): MonkeyObject {
         return when (fn) {
             is MFunction -> {
                 val extendedEnv = extendFunctionEnv(fn, args)
@@ -281,7 +281,7 @@ class Evaluator {
         }
     }
 
-    fun extendFunctionEnv(fn: MFunction, args: List<MonkeyObject>): Environment {
+    private fun extendFunctionEnv(fn: MFunction, args: List<MonkeyObject>): Environment {
         val env = Environment.newEnclosedEnvironment(fn.env)
 
         fn.parameters.forEachIndexed { idx, parameter ->
@@ -291,7 +291,7 @@ class Evaluator {
         return env
     }
 
-    fun unwrapReturnValue(obj: MonkeyObject): MonkeyObject {
+    private fun unwrapReturnValue(obj: MonkeyObject): MonkeyObject {
         if (obj is MReturnValue) {
             return obj.value
         }
@@ -299,7 +299,7 @@ class Evaluator {
         return obj
     }
 
-    fun evalIndexExpression(left: MonkeyObject, index: MonkeyObject): MonkeyObject {
+    private fun evalIndexExpression(left: MonkeyObject, index: MonkeyObject): MonkeyObject {
         return when {
             left.type() == ARRAY_OBJ && index.type() == INTEGER_OBJ -> evalArrayIndexExpression(
                 left as MArray,
@@ -311,7 +311,7 @@ class Evaluator {
         }
     }
 
-    fun evalArrayIndexExpression(array: MArray, index: MInteger): MonkeyObject {
+    private fun evalArrayIndexExpression(array: MArray, index: MInteger): MonkeyObject {
         if (index.value < 0 || index.value > array.elements.size - 1) {
             return NULL
         }
@@ -319,7 +319,7 @@ class Evaluator {
         return array.elements[index.value]
     }
 
-    fun evalHashLiteral(node: interpreter.ast.HashLiteral, env: Environment): MonkeyObject {
+    private fun evalHashLiteral(node: interpreter.ast.HashLiteral, env: Environment): MonkeyObject {
         val pairs = mutableMapOf<HashKey, HashPair>()
 
         node.pairs.entries.forEach { (k, v) ->
@@ -341,7 +341,7 @@ class Evaluator {
         return Hash(pairs)
     }
 
-    fun evalHashIndexExpression(hash: Hash, index: MonkeyObject): MonkeyObject {
+    private fun evalHashIndexExpression(hash: Hash, index: MonkeyObject): MonkeyObject {
         if (index !is Hashable) {
             return newError("unusable as hash key: ${index.type()}")
         }

@@ -14,7 +14,7 @@ const val PREFIX = 5       // -X or !X
 const val CALL = 6         // myFunction(X)
 const val INDEX = 7        // array[index]
 
-val precedences = mapOf<TokenType, Int>(
+val precedences = mapOf(
     EQ to EQUALS,
     NOT_EQ to EQUALS,
     LT to LESSGREATER,
@@ -31,8 +31,8 @@ typealias PrefixParseFn = (parser: Parser) -> Expression?
 typealias InfixParseFn = (parser: Parser, exp: Expression) -> Expression?
 
 class Parser(
-    val lexer: Lexer, val errors: MutableList<String>, var curToken: Token, var peekToken: Token,
-    var prefixParseFns: Map<TokenType, PrefixParseFn>, var infixParseFns: Map<TokenType, InfixParseFn>
+    private val lexer: Lexer, val errors: MutableList<String>, private var curToken: Token, private var peekToken: Token,
+    private var prefixParseFns: Map<TokenType, PrefixParseFn>, private var infixParseFns: Map<TokenType, InfixParseFn>
 ) {
     companion object {
         fun new(lexer: Lexer): Parser {
@@ -78,11 +78,11 @@ class Parser(
         peekToken = lexer.nextToken()
     }
 
-    fun curTokenIs(t: TokenType) = curToken.type == t
+    private fun curTokenIs(t: TokenType) = curToken.type == t
 
-    fun peekTokenIs(t: TokenType) = peekToken.type == t
+    private fun peekTokenIs(t: TokenType) = peekToken.type == t
 
-    fun expectPeek(t: TokenType): Boolean {
+    private fun expectPeek(t: TokenType): Boolean {
         return if (peekTokenIs(t)) {
             nextToken()
             true
@@ -94,13 +94,13 @@ class Parser(
 
     fun errors() = errors
 
-    fun peekError(t: TokenType) {
+    private fun peekError(t: TokenType) {
         val msg = "expected next token to be ${t}, got ${peekToken.type} instead"
         errors.add(msg)
     }
 
-    fun noPrefixParseFnError(t: TokenType) {
-        val msg = "no prefix parse function for ${t} found"
+    private fun noPrefixParseFnError(t: TokenType) {
+        val msg = "no prefix parse function for $t found"
         errors.add(msg)
     }
 
@@ -115,7 +115,7 @@ class Parser(
         return Program(statements)
     }
 
-    fun parseStatement(): Statement? {
+    private fun parseStatement(): Statement? {
         return when (curToken.type) {
             LET -> parseLetStatement()
             RETURN -> parseReturnStatement()
@@ -147,7 +147,7 @@ class Parser(
         return LetStatement(curToken, name, value)
     }
 
-    fun parseReturnStatement(): ReturnStatement {
+    private fun parseReturnStatement(): ReturnStatement {
         val curToken = curToken
 
         nextToken()
@@ -161,7 +161,7 @@ class Parser(
         return statement
     }
 
-    fun parseExpressionStatement(): ExpressionStatement {
+    private fun parseExpressionStatement(): ExpressionStatement {
         val statement = ExpressionStatement(curToken, parseExpression(LOWEST))
 
         if (peekTokenIs(SEMICOLON)) {
@@ -171,7 +171,7 @@ class Parser(
         return statement
     }
 
-    fun parseExpression(precedence: Int): Expression? {
+    private fun parseExpression(precedence: Int): Expression? {
         val prefix = prefixParseFns[curToken.type]
         if (prefix == null) {
             noPrefixParseFnError(curToken.type)
@@ -181,10 +181,7 @@ class Parser(
         var leftExp: Expression? = prefix(this) ?: return null
 
         while (!peekTokenIs(SEMICOLON) && precedence < peekPrecedence()) {
-            val infix = infixParseFns[peekToken.type]
-            if (infix == null) {
-                return leftExp
-            }
+            val infix = infixParseFns[peekToken.type] ?: return leftExp
 
             nextToken()
 
@@ -194,11 +191,11 @@ class Parser(
         return leftExp
     }
 
-    fun peekPrecedence(): Int {
+    private fun peekPrecedence(): Int {
         return precedences.getOrDefault(peekToken.type, LOWEST)
     }
 
-    fun curPrecedence(): Int {
+    private fun curPrecedence(): Int {
         return precedences.getOrDefault(curToken.type, LOWEST)
     }
 
@@ -216,7 +213,7 @@ class Parser(
         }
     }
 
-    fun parseStringLiteral(): Expression? {
+    fun parseStringLiteral(): Expression {
         return StringLiteral(curToken, curToken.literal)
     }
 
@@ -278,7 +275,7 @@ class Parser(
         return IfExpression(curToken, condition!!, consequence, alternative)
     }
 
-    fun parseBlockStatement(): BlockStatement {
+    private fun parseBlockStatement(): BlockStatement {
         val curToken = curToken
         val statements = mutableListOf<Statement>()
 
@@ -309,7 +306,7 @@ class Parser(
         return FunctionLiteral(curToken, parameters, body = parseBlockStatement())
     }
 
-    fun parseFunctionParameters(): List<Identifier> {
+    private fun parseFunctionParameters(): List<Identifier> {
         val identifiers = mutableListOf<Identifier>()
 
         // no params
@@ -339,7 +336,7 @@ class Parser(
         return CallExpression(curToken, function, parseCallArguments())
     }
 
-    fun parseExpressionList(end: TokenType) : List<Expression> {
+    private fun parseExpressionList(end: TokenType) : List<Expression> {
         val list = mutableListOf<Expression>()
 
         if (peekTokenIs(end)) {
@@ -409,7 +406,7 @@ class Parser(
         return HashLiteral(curToken, pairs)
     }
 
-    fun parseCallArguments(): List<Expression> {
+    private fun parseCallArguments(): List<Expression> {
         val args = mutableListOf<Expression>()
 
         // no args

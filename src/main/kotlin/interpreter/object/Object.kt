@@ -59,7 +59,7 @@ class MError(val value: String) : MonkeyObject {
     override fun inspect() = "ERROR: $value"
 }
 
-class MNonInitialized() : MonkeyObject {
+class MNonInitialized : MonkeyObject {
     override fun type() = NON_INITALIZED_OBJ
 
     override fun inspect() = "ERROR: Non initialized"

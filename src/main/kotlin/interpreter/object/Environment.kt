@@ -12,7 +12,7 @@ class Environment(private val store: MutableMap<String, MonkeyObject>, private v
     }
 
     operator fun get(name: String): MonkeyObject? {
-        return store[name] ?: if (outer != null) outer[name] else null;
+        return store[name] ?: if (outer != null) outer[name] else null
     }
 
     operator fun set(name: String, value: MonkeyObject): MonkeyObject {

@@ -49,7 +49,7 @@ data class Token(val type: TokenType, val literal: String) {
     constructor(type: TokenType, literal: Char) : this(type, literal.toString())
 }
 
-val keywords = mapOf<String, TokenType>(
+val keywords = mapOf(
     "fn" to FUNCTION,
     "let" to LET,
     "true" to TRUE,

@@ -2,7 +2,7 @@ package interpreter.lexer
 
 import interpreter.token.*
 
-class Lexer(val input: String, var position: Int, var readPosition: Int, var ch: Char) {
+class Lexer(private val input: String, private var position: Int, private var readPosition: Int, private var ch: Char) {
     companion object {
         fun new(input: String): Lexer {
             Lexer(input, 0, 0, '\u0000').let { l ->
@@ -123,11 +123,11 @@ class Lexer(val input: String, var position: Int, var readPosition: Int, var ch:
         return input.substring(initial until position)
     }
 
-    private fun isLetter(ch: Char): kotlin.Boolean {
+    private fun isLetter(ch: Char): Boolean {
         return ch in 'a'..'z' || ch in 'A'..'Z' || ch == '_'
     }
 
-    private fun isDigit(ch: Char): kotlin.Boolean {
+    private fun isDigit(ch: Char): Boolean {
         return ch in '0'..'9'
     }
 

@@ -2,7 +2,7 @@ package interpreter.evaluator
 
 import interpreter.`object`.*
 
-val builtins = mapOf<String, Builtin>(
+val builtins = mapOf(
     "len" to Builtin(Builtins.Companion::len),
     "puts" to Builtin(Builtins.Companion::puts),
     "first" to Builtin(Builtins.Companion::first),
