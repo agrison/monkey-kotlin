@@ -98,7 +98,7 @@ data class MArray(val elements: List<MonkeyObject>) : MonkeyObject {
         val out = StringBuilder()
 
         return out.append("[")
-            .append(elements.joinToString(", "))
+            .append(elements.joinToString(", ") { it.inspect() })
             .append("]").toString()
     }
 }

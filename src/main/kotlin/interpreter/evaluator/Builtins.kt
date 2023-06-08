@@ -70,7 +70,7 @@ class Builtins {
                     val arr = args[0] as MArray
                     val length = arr.elements.size
                     if (length > 0) {
-                        val newElements = arr.elements.subList(1, length - 1).toList()
+                        val newElements = arr.elements.subList(1, length).toList()
                         return MArray(newElements)
                     }
                     return NULL

@@ -10,12 +10,12 @@ const val PROMPT = ">> "
 
 class Repl {
     fun start() {
-        val scanner = Scanner(System.`in`)
+        val keyboard = Scanner(System.`in`)
         val env = Environment.newEnvironment()
 
         while (true) {
             print(PROMPT)
-            val scanned = scanner.nextLine()
+            val scanned = keyboard.nextLine()
             if (scanned == ":q") {
                 return
             }
