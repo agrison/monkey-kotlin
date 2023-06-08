@@ -41,6 +41,24 @@ class EvaluatorTest {
     @ParameterizedTest
     @CsvSource(
         value = [
+            "5.0, 5.0",
+            "10.1, 10.1",
+            "-5.2, -5.2",
+            "-10.3, -10.3",
+            "5.3 + 5 + 5 + 5 - 10, 10.3",
+            "2.2 * 2 * 2 * 2 * 2, 35.2",
+            "50.2 / 2 * 2 + 10, 60.2",
+            "2 * (5.5 + 10.5), 32.0",
+        ]
+    )
+    fun testEvalDoubleExpressions(input: String, expected: Double) {
+        val evaluated = testEval(input)
+        testDoubleObject(evaluated, expected)
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        value = [
             "true, true",
             "false, false",
             "1 < 2, true",
@@ -339,6 +357,12 @@ addTwo(2);"""
         assert(obj is MInteger) { "object is not Integer. got=${obj.type()}" }
         val value = (obj as MInteger).value
         assert(value == expected) { "integer has wrong value. got=${value}, want=${expected}" }
+    }
+
+    private fun testDoubleObject(obj: MonkeyObject, expected: Double) {
+        assert(obj is MDouble) { "object is not Double. got=${obj.inspect()}" }
+        val value = (obj as MDouble).value
+        assert(value == expected) { "Double has wrong value. got=${value}, want=${expected}" }
     }
 
     private fun testBooleanObject(obj: MonkeyObject, expected: Boolean) {

@@ -43,6 +43,7 @@ class Parser(
             val prefixParseFns = mapOf<TokenType, PrefixParseFn>(
                 IDENT to Parser::parseIdentifier,
                 INT to Parser::parseIntegerLiteral,
+                DOUBLE to Parser::parseDoubleLiteral,
                 STRING to Parser::parseStringLiteral,
                 BANG to Parser::parsePrefixExpression,
                 MINUS to Parser::parsePrefixExpression,
@@ -211,6 +212,16 @@ class Parser(
             IntegerLiteral(curToken, int)
         } catch (e: Exception) {
             errors.add("Could not parse ${curToken.literal} as integer")
+            null
+        }
+    }
+
+    fun parseDoubleLiteral(): Expression? {
+        return try {
+            val double = curToken.literal.replace("[^\\d.]".toRegex(), "").toDouble()
+            DoubleLiteral(curToken, double)
+        } catch (e: Exception) {
+            errors.add("Could not parse ${curToken.literal} as double")
             null
         }
     }

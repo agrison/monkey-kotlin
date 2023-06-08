@@ -9,6 +9,7 @@ class LexerTest {
     fun nextToken() {
         val input = """let five = 5;
 let ten = 10;
+let eleven = 11.0;
 
 let add = fn(x, y) {
   x + y;
@@ -42,6 +43,11 @@ if (5 < 10) {
             Pair(IDENT, "ten"),
             Pair(ASSIGN, "="),
             Pair(INT, "10"),
+            Pair(SEMICOLON, ";"),
+            Pair(LET, "let"),
+            Pair(IDENT, "eleven"),
+            Pair(ASSIGN, "="),
+            Pair(DOUBLE, "11.0"),
             Pair(SEMICOLON, ";"),
             Pair(LET, "let"),
             Pair(IDENT, "add"),

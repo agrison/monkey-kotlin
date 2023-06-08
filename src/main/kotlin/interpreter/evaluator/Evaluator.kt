@@ -2,7 +2,6 @@ package interpreter.evaluator
 
 import interpreter.ast.BooleanLiteral
 import interpreter.`object`.*
-import java.lang.Exception
 
 val NULL = MNull()
 val TRUE = MBoolean(true)
@@ -32,6 +31,7 @@ class Evaluator {
             }
 
             is interpreter.ast.IntegerLiteral -> MInteger(node.value)
+            is interpreter.ast.DoubleLiteral -> MDouble(node.value)
             is interpreter.ast.StringLiteral -> MString(node.value)
             is BooleanLiteral -> MBoolean(node.value)
             is interpreter.ast.PrefixExpression -> {
@@ -142,16 +142,18 @@ class Evaluator {
 
     private fun evalInfixExpression(operator: String, left: MonkeyObject, right: MonkeyObject): MonkeyObject {
         return when {
-            left.type() == INTEGER_OBJ && right.type() == INTEGER_OBJ -> evalIntegerInfixExpression(
+            left.type().isNumber() && right.type().isNumber() -> evalNumberInfixExpression(
                 operator,
                 left,
                 right
             )
+
             left.type() == STRING_OBJ && (right.type() == STRING_OBJ || right.type() == INTEGER_OBJ) -> evalStringInfixExpression(
                 operator,
                 left,
                 right
             )
+
             operator == "==" -> MBoolean(left == right)
             operator == "!=" -> MBoolean(left != right)
             left.type() != right.type() -> newError("type mismatch: ${left.type()} $operator ${right.type()}")
@@ -169,11 +171,44 @@ class Evaluator {
     }
 
     private fun evalMinusPrefixOperatorExpression(right: MonkeyObject): MonkeyObject {
-        if (right.type() != INTEGER_OBJ) {
-            return newError("unknown operator: -${right.type()}")
+        if (right.type() == INTEGER_OBJ) {
+            return MInteger(0 - (right as MInteger).value)
+        } else if (right.type() == DOUBLE_OBJ) {
+            return MDouble(0 - (right as MDouble).value)
         }
 
-        return MInteger(0 - (right as MInteger).value)
+        return newError("unknown operator: -${right.type()}")
+    }
+
+    private fun evalNumberInfixExpression(operator: String, left: MonkeyObject, right: MonkeyObject): MonkeyObject {
+        if (left is MInteger && right is MInteger) {
+            return evalIntegerInfixExpression(operator, left, right)
+        }
+
+        val leftVal =
+            (when (left) {
+                is MInteger -> left.value
+                is MDouble -> left.value
+                else -> return newError("not an INTEGER nor a DOUBLE")
+            }).toDouble()
+        val rightVal =
+            (when (right) {
+                is MInteger -> right.value
+                is MDouble -> right.value
+                else -> return newError("not an INTEGER nor a DOUBLE")
+            }).toDouble()
+
+        return when (operator) {
+            "+" -> MDouble(leftVal + rightVal)
+            "-" -> MDouble(leftVal - rightVal)
+            "*" -> MDouble(leftVal * rightVal)
+            "/" -> MDouble(leftVal / rightVal)
+            "<" -> MBoolean(leftVal < rightVal)
+            ">" -> MBoolean(leftVal > rightVal)
+            "==" -> MBoolean(leftVal == rightVal)
+            "!=" -> MBoolean(leftVal != rightVal)
+            else -> newError("unknown operator: ${left.type()} $operator ${right.type()}")
+        }
     }
 
     private fun evalIntegerInfixExpression(operator: String, left: MonkeyObject, right: MonkeyObject): MonkeyObject {
@@ -276,6 +311,7 @@ class Evaluator {
                 val evaluated = eval(fn.body, extendedEnv)
                 unwrapReturnValue(evaluated)
             }
+
             is Builtin -> fn.fn(args)
             else -> newError("not a function: ${fn.type()}")
         }

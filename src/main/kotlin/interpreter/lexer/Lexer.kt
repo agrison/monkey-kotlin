@@ -64,7 +64,7 @@ class Lexer(private val input: String, private var position: Int, private var re
                     val ident = readIdentifier()
                     return Token(lookupIdent(ident), ident)
                 } else if (isDigit(ch)) {
-                    return Token(INT, readNumber())
+                    return readNumber()
                 } else {
                     tok = Token(ILLEGAL, ch)
                 }
@@ -95,6 +95,14 @@ class Lexer(private val input: String, private var position: Int, private var re
         }
     }
 
+    private fun peekNextChar(): Char {
+        return if (readPosition + 1 >= input.length) {
+            '\u0000'
+        } else {
+            input[readPosition + 1]
+        }
+    }
+
     private fun readIdentifier(): String {
         val initial = position
         while (isLetter(ch)) {
@@ -103,12 +111,22 @@ class Lexer(private val input: String, private var position: Int, private var re
         return input.substring(initial until position)
     }
 
-    private fun readNumber(): String {
+    private fun readNumber(): Token {
         val initial = position
+        var isInt = true
         while (isDigit(ch)) {
             readChar()
         }
-        return input.substring(initial until position)
+        if (ch == '.') {
+            isInt = false
+            readChar()
+            while (isDigit(ch)) {
+                readChar()
+            }
+        }
+
+        return if (isInt) Token(INT, input.substring(initial until position))
+        else Token(DOUBLE, input.substring(initial until position))
     }
 
     private fun readString(): String {

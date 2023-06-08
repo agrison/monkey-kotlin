@@ -9,6 +9,7 @@ typealias ObjectType = String
 const val NULL_OBJ = "interpreter.getNULL"
 const val ERROR_OBJ = "ERROR"
 const val INTEGER_OBJ = "INTEGER"
+const val DOUBLE_OBJ = "DOUBLE"
 const val BOOLEAN_OBJ = "BOOLEAN"
 const val RETURN_VALUE_OBJ = "RETURN_VALUE"
 const val FUNCTION_OBJ = "FUNCTION"
@@ -17,6 +18,8 @@ const val STRING_OBJ = "STRING"
 const val ARRAY_OBJ = "ARRAY"
 const val HASH_OBJ = "HASH"
 const val BUILTIN_OBJ = "BUILTIN"
+
+fun ObjectType.isNumber() = this == INTEGER_OBJ || this == DOUBLE_OBJ
 
 interface MonkeyObject {
     fun type(): ObjectType
@@ -31,6 +34,14 @@ data class MInteger(val value: Int) : MonkeyObject, Hashable {
     override fun inspect() = "$value"
 
     override fun hashKey() = HashKey(type(), value)
+}
+
+data class MDouble(val value: Double) : MonkeyObject, Hashable {
+    override fun type() = DOUBLE_OBJ
+
+    override fun inspect() = "$value"
+
+    override fun hashKey() = HashKey(type(), value.hashCode())
 }
 
 data class MBoolean(val value: Boolean) : MonkeyObject, Hashable {

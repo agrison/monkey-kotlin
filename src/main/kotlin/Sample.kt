@@ -46,7 +46,7 @@ let map = fn(arr, f) {
   iter(arr, []);
 };
 
-let numbers = [1, 1 + 1, 4 - 1, 2 * 2, 2 + 3, 12 / 2];
+let numbers = [1.0, 1 + 1, 4 - 1, 2 * 2, 2 + 3, 12 / 2, 17.0];
 map(numbers, fibonacci);
 
 """
