@@ -232,8 +232,8 @@ class Parser(
         return InfixExpression(curToken, left, curToken.literal, parseExpression(precedence)!!)
     }
 
-    fun parseBoolean(): interpreter.ast.Boolean {
-        return Boolean(curToken, curTokenIs(TRUE))
+    fun parseBoolean(): interpreter.ast.BooleanLiteral {
+        return BooleanLiteral(curToken, curTokenIs(TRUE))
     }
 
     fun parseGroupedExpression(): Expression? {

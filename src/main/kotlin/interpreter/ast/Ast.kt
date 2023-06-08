@@ -87,7 +87,7 @@ class Identifier(private val token: Token, val value: String) : Expression {
     override fun toString() = value
 }
 
-class Boolean(private val token: Token, val value: Boolean) : Expression {
+class BooleanLiteral(private val token: Token, val value: Boolean) : Expression {
     override fun tokenLiteral() = token.literal
 
     override fun toString() = token.literal

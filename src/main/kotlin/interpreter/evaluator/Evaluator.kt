@@ -1,6 +1,6 @@
 package interpreter.evaluator
 
-import interpreter.ast.Boolean
+import interpreter.ast.BooleanLiteral
 import interpreter.`object`.*
 import java.lang.Exception
 
@@ -33,7 +33,7 @@ class Evaluator {
 
             is interpreter.ast.IntegerLiteral -> MInteger(node.value)
             is interpreter.ast.StringLiteral -> MString(node.value)
-            is Boolean -> MBoolean(node.value)
+            is BooleanLiteral -> MBoolean(node.value)
             is interpreter.ast.PrefixExpression -> {
                 val right = eval(node.right, env)
                 if (isError(right)) {
