@@ -31,8 +31,12 @@ typealias PrefixParseFn = (parser: Parser) -> Expression?
 typealias InfixParseFn = (parser: Parser, exp: Expression) -> Expression?
 
 class Parser(
-    private val lexer: Lexer, val errors: MutableList<String>, private var curToken: Token, private var peekToken: Token,
-    private var prefixParseFns: Map<TokenType, PrefixParseFn>, private var infixParseFns: Map<TokenType, InfixParseFn>
+    private val lexer: Lexer,
+    val errors: MutableList<String>,
+    private var curToken: Token,
+    private var peekToken: Token,
+    private var prefixParseFns: Map<TokenType, PrefixParseFn>,
+    private var infixParseFns: Map<TokenType, InfixParseFn>
 ) {
     companion object {
         fun new(lexer: Lexer): Parser {
@@ -254,11 +258,7 @@ class Parser(
         nextToken()
         val condition = parseExpression(LOWEST)
 
-        if (!expectPeek(RPAREN)) {
-            return null
-        }
-
-        if (!expectPeek(LBRACE)) {
+        if (!expectPeek(RPAREN) || !expectPeek(LBRACE)) {
             return null
         }
 
@@ -336,7 +336,7 @@ class Parser(
         return CallExpression(curToken, function, parseCallArguments())
     }
 
-    private fun parseExpressionList(end: TokenType) : List<Expression> {
+    private fun parseExpressionList(end: TokenType): List<Expression> {
         val list = mutableListOf<Expression>()
 
         if (peekTokenIs(end)) {
@@ -345,12 +345,12 @@ class Parser(
         }
 
         nextToken()
-        list.add(parseExpression(LOWEST)!!)
+        list.add(parseLowest())
 
         while (peekTokenIs(COMMA)) {
             nextToken()
             nextToken()
-            list.add(parseExpression(LOWEST)!!)
+            list.add(parseLowest())
         }
 
         if (!expectPeek(end)) {
@@ -364,11 +364,11 @@ class Parser(
         return ArrayLiteral(curToken, parseExpressionList(RBRACKET))
     }
 
-    fun parseIndexExpression(left: Expression) : Expression? {
+    fun parseIndexExpression(left: Expression): Expression? {
         val curToken = curToken
         nextToken()
 
-        val index = parseExpression(LOWEST)!!
+        val index = parseLowest()
 
         if (!expectPeek(RBRACKET)) {
             return null
@@ -377,20 +377,20 @@ class Parser(
         return IndexExpression(curToken, left, index)
     }
 
-    fun parseHashLiteral() : Expression? {
+    fun parseHashLiteral(): Expression? {
         val curToken = curToken
         val pairs = mutableMapOf<Expression, Expression>()
 
         while (!peekTokenIs(RBRACE)) {
             nextToken()
-            val key = parseExpression(LOWEST)!!
+            val key = parseLowest()
 
             if (!expectPeek(COLON)) {
                 return null
             }
 
             nextToken()
-            val value = parseExpression(LOWEST)!!
+            val value = parseLowest()
 
             pairs[key] = value
 
@@ -416,12 +416,12 @@ class Parser(
         }
 
         nextToken()
-        args.add(parseExpression(LOWEST)!!)
+        args.add(parseLowest())
 
         while (peekTokenIs(COMMA)) {
             nextToken()
             nextToken()
-            args.add(parseExpression(LOWEST)!!)
+            args.add(parseLowest())
         }
 
         if (!expectPeek(RPAREN)) {
@@ -430,5 +430,7 @@ class Parser(
 
         return args
     }
+
+    private fun parseLowest() = parseExpression(LOWEST)!!
 
 }
