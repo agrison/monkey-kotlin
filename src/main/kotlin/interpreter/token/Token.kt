@@ -1,4 +1,4 @@
-package interpreter
+package interpreter.token
 
 typealias TokenType = String
 

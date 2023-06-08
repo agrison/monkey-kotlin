@@ -1,6 +1,6 @@
 package interpreter.ast
 
-import interpreter.Token
+import interpreter.token.Token
 import kotlin.Boolean
 
 interface Node {

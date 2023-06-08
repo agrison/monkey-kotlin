@@ -1,8 +1,8 @@
 package interpreter.parser
 
-import interpreter.*
 import interpreter.ast.*
 import interpreter.lexer.Lexer
+import interpreter.token.*
 import kotlin.Boolean
 
 const val LOWEST = 0

@@ -1,6 +1,6 @@
 package interpreter.lexer
 
-import interpreter.*
+import interpreter.token.*
 
 class Lexer(val input: String, var position: Int, var readPosition: Int, var ch: Char) {
     companion object {

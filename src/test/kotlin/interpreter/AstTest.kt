@@ -3,6 +3,9 @@ package interpreter
 import interpreter.ast.Identifier
 import interpreter.ast.LetStatement
 import interpreter.ast.Program
+import interpreter.token.IDENT
+import interpreter.token.LET
+import interpreter.token.Token
 import org.junit.jupiter.api.Test
 
 class AstTest {
