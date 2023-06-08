@@ -7,7 +7,7 @@ import kotlin.Boolean
 
 const val LOWEST = 0
 const val EQUALS = 1       // ==
-const val LESSGREATER = 2  // > or <
+const val LESS_GREATER = 2  // > or <
 const val SUM = 3          // +
 const val PRODUCT = 4      // *
 const val PREFIX = 5       // -X or !X
@@ -17,8 +17,8 @@ const val INDEX = 7        // array[index]
 val precedences = mapOf(
     EQ to EQUALS,
     NOT_EQ to EQUALS,
-    LT to LESSGREATER,
-    GT to LESSGREATER,
+    LT to LESS_GREATER,
+    GT to LESS_GREATER,
     PLUS to SUM,
     MINUS to SUM,
     SLASH to PRODUCT,
