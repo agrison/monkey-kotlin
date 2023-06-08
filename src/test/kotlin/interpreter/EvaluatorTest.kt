@@ -1,6 +1,6 @@
 package interpreter
 
-import Evaluator
+import interpreter.evaluator.Evaluator
 import interpreter.lexer.Lexer
 import interpreter.`object`.*
 import interpreter.parser.Parser

@@ -1,12 +1,14 @@
+package interpreter.evaluator
+
 import interpreter.`object`.*
 
 val builtins = mapOf<String, Builtin>(
-    "len" to Builtin(Builtins::len),
-    "puts" to Builtin(Builtins::puts),
-    "first" to Builtin(Builtins::first),
-    "last" to Builtin(Builtins::last),
-    "rest" to Builtin(Builtins::rest),
-    "push" to Builtin(Builtins::push),
+    "len" to Builtin(Builtins.Companion::len),
+    "puts" to Builtin(Builtins.Companion::puts),
+    "first" to Builtin(Builtins.Companion::first),
+    "last" to Builtin(Builtins.Companion::last),
+    "rest" to Builtin(Builtins.Companion::rest),
+    "push" to Builtin(Builtins.Companion::push),
 )
 
 class Builtins {

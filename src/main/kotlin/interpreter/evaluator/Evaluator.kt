@@ -1,3 +1,5 @@
+package interpreter.evaluator
+
 import interpreter.ast.Boolean
 import interpreter.`object`.*
 import java.lang.Exception
