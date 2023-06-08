@@ -1,6 +1,7 @@
 package interpreter
 
 import interpreter.ast.*
+import interpreter.lexer.Lexer
 import kotlin.Boolean
 
 const val LOWEST = 0

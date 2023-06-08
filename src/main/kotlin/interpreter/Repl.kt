@@ -1,6 +1,7 @@
 package interpreter
 
 import Evaluator
+import interpreter.lexer.Lexer
 import interpreter.`object`.Environment
 import java.util.*
 

@@ -1,5 +1,6 @@
 package interpreter
 
+import interpreter.lexer.Lexer
 import org.junit.jupiter.api.Test
 
 class LexerTest {

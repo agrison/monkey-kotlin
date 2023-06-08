@@ -1,6 +1,7 @@
 package interpreter
 
 import Evaluator
+import interpreter.lexer.Lexer
 import interpreter.`object`.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest

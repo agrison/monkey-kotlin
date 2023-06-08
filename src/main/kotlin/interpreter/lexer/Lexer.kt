@@ -1,4 +1,6 @@
-package interpreter
+package interpreter.lexer
+
+import interpreter.*
 
 class Lexer(val input: String, var position: Int, var readPosition: Int, var ch: Char) {
     companion object {
