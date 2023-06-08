@@ -6,13 +6,13 @@ import interpreter.token.*
 import kotlin.Boolean
 
 const val LOWEST = 0
-const val EQUALS = 1       // ==
+const val EQUALS = 1        // ==
 const val LESS_GREATER = 2  // > or <
-const val SUM = 3          // +
-const val PRODUCT = 4      // *
-const val PREFIX = 5       // -X or !X
-const val CALL = 6         // myFunction(X)
-const val INDEX = 7        // array[index]
+const val SUM = 3           // +
+const val PRODUCT = 4       // *
+const val PREFIX = 5        // -X or !X
+const val CALL = 6          // myFunction(X)
+const val INDEX = 7         // array[index]
 
 val precedences = mapOf(
     EQ to EQUALS,
