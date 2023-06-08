@@ -1,5 +1,5 @@
 import interpreter.*
-import interpreter.Boolean
+import interpreter.ast.Boolean
 import java.lang.Exception
 
 val NULL = MNull()
@@ -7,12 +7,12 @@ val TRUE = MBoolean(true)
 val FALSE = MBoolean(false)
 
 class Evaluator {
-    fun eval(node: Node, env: Environment): MonkeyObject {
+    fun eval(node: interpreter.ast.Node, env: Environment): MonkeyObject {
         return when (node) {
-            is Program -> evalProgram(node, env)
-            is BlockStatement -> evalBlockStatement(node, env)
-            is ExpressionStatement -> eval(node.expression!!, env)
-            is ReturnStatement -> {
+            is interpreter.ast.Program -> evalProgram(node, env)
+            is interpreter.ast.BlockStatement -> evalBlockStatement(node, env)
+            is interpreter.ast.ExpressionStatement -> eval(node.expression!!, env)
+            is interpreter.ast.ReturnStatement -> {
                 val value = eval(node.returnValue!!, env)
                 if (isError(value)) {
                     return value
@@ -20,7 +20,7 @@ class Evaluator {
                 MReturnValue(value)
             }
 
-            is LetStatement -> {
+            is interpreter.ast.LetStatement -> {
                 val value = eval(node.value!!, env)
                 if (isError(value)) {
                     return value
@@ -29,10 +29,10 @@ class Evaluator {
                 return value
             }
 
-            is IntegerLiteral -> MInteger(node.value)
-            is StringLiteral -> MString(node.value)
+            is interpreter.ast.IntegerLiteral -> MInteger(node.value)
+            is interpreter.ast.StringLiteral -> MString(node.value)
             is Boolean -> MBoolean(node.value)
-            is PrefixExpression -> {
+            is interpreter.ast.PrefixExpression -> {
                 val right = eval(node.right, env)
                 if (isError(right)) {
                     return right
@@ -40,7 +40,7 @@ class Evaluator {
                 evalPrefixExpression(node.operator, right)
             }
 
-            is InfixExpression -> {
+            is interpreter.ast.InfixExpression -> {
                 val left = eval(node.left, env)
                 if (isError(left)) {
                     return left
@@ -54,10 +54,10 @@ class Evaluator {
                 evalInfixExpression(node.operator, left, right)
             }
 
-            is IfExpression -> evalIfExpression(node, env)
-            is Identifier -> evalIdentifier(node, env)
-            is FunctionLiteral -> MFunction(node.parameters, node.body, env)
-            is CallExpression -> {
+            is interpreter.ast.IfExpression -> evalIfExpression(node, env)
+            is interpreter.ast.Identifier -> evalIdentifier(node, env)
+            is interpreter.ast.FunctionLiteral -> MFunction(node.parameters, node.body, env)
+            is interpreter.ast.CallExpression -> {
                 val function = eval(node.function, env)
                 if (isError(function)) {
                     return function
@@ -71,7 +71,7 @@ class Evaluator {
                 applyFunction(function, args)
             }
 
-            is ArrayLiteral -> {
+            is interpreter.ast.ArrayLiteral -> {
                 val elements = evalExpressions(node.elements, env)
                 if (elements.size == 1 && isError(elements[0])) {
                     return elements[0]
@@ -80,7 +80,7 @@ class Evaluator {
                 MArray(elements)
             }
 
-            is IndexExpression -> {
+            is interpreter.ast.IndexExpression -> {
                 val left = eval(node.left, env)
                 if (isError(left)) {
                     return left
@@ -94,13 +94,13 @@ class Evaluator {
                 evalIndexExpression(left, index)
             }
 
-            is HashLiteral -> evalHashLiteral(node, env)
+            is interpreter.ast.HashLiteral -> evalHashLiteral(node, env)
 
             else -> MNull()
         }
     }
 
-    fun evalProgram(program: Program, env: Environment): MonkeyObject {
+    fun evalProgram(program: interpreter.ast.Program, env: Environment): MonkeyObject {
         var result: MonkeyObject = MNonInitialized()
 
         program.statements.forEach { statement ->
@@ -114,7 +114,7 @@ class Evaluator {
         return result
     }
 
-    fun evalBlockStatement(block: BlockStatement, env: Environment): MonkeyObject {
+    fun evalBlockStatement(block: interpreter.ast.BlockStatement, env: Environment): MonkeyObject {
         var result: MonkeyObject = MNonInitialized()
 
         block.statements.forEach { statement ->
@@ -207,7 +207,7 @@ class Evaluator {
         }
     }
 
-    fun evalIfExpression(ie: IfExpression, env: Environment): MonkeyObject {
+    fun evalIfExpression(ie: interpreter.ast.IfExpression, env: Environment): MonkeyObject {
         val condition = eval(ie.condition, env)
         if (isError(condition)) {
             return condition
@@ -222,7 +222,7 @@ class Evaluator {
         }
     }
 
-    fun evalIdentifier(node: Identifier, env: Environment): MonkeyObject {
+    fun evalIdentifier(node: interpreter.ast.Identifier, env: Environment): MonkeyObject {
         val value = env[node.value]
         if (value != null) {
             return value
@@ -253,7 +253,7 @@ class Evaluator {
         return obj.type() == ERROR_OBJ
     }
 
-    fun evalExpressions(exps: List<Expression>, env: Environment): List<MonkeyObject> {
+    fun evalExpressions(exps: List<interpreter.ast.Expression>, env: Environment): List<MonkeyObject> {
         val result = mutableListOf<MonkeyObject>()
 
         exps.forEach { exp ->
@@ -317,7 +317,7 @@ class Evaluator {
         return array.elements[index.value]
     }
 
-    fun evalHashLiteral(node: HashLiteral, env: Environment): MonkeyObject {
+    fun evalHashLiteral(node: interpreter.ast.HashLiteral, env: Environment): MonkeyObject {
         val pairs = mutableMapOf<HashKey, HashPair>()
 
         node.pairs.entries.forEach { (k, v) ->

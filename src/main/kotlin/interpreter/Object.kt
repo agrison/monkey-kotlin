@@ -1,5 +1,7 @@
 package interpreter
 
+import interpreter.ast.BlockStatement
+import interpreter.ast.Identifier
 import kotlin.Boolean
 
 typealias ObjectType = String

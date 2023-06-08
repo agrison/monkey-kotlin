@@ -1,5 +1,6 @@
 package interpreter
 
+import interpreter.ast.*
 import kotlin.Boolean
 
 const val LOWEST = 0
@@ -230,8 +231,8 @@ class Parser(
         return InfixExpression(curToken, left, curToken.literal, parseExpression(precedence)!!)
     }
 
-    fun parseBoolean(): interpreter.Boolean {
-        return interpreter.Boolean(curToken, curTokenIs(TRUE))
+    fun parseBoolean(): interpreter.ast.Boolean {
+        return Boolean(curToken, curTokenIs(TRUE))
     }
 
     fun parseGroupedExpression(): Expression? {

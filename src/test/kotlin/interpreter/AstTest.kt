@@ -1,8 +1,9 @@
 package interpreter
 
+import interpreter.ast.Identifier
+import interpreter.ast.LetStatement
+import interpreter.ast.Program
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 
 class AstTest {
 
