@@ -1,4 +1,4 @@
-import interpreter.*
+import interpreter.`object`.*
 
 val builtins = mapOf<String, Builtin>(
     "len" to Builtin(Builtins::len),

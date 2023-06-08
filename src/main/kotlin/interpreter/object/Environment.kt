@@ -1,4 +1,4 @@
-package interpreter
+package interpreter.`object`
 
 class Environment(private val store: MutableMap<String, MonkeyObject>, private val outer: Environment?) {
     companion object {

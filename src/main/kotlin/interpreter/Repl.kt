@@ -1,6 +1,7 @@
 package interpreter
 
 import Evaluator
+import interpreter.`object`.Environment
 import java.util.*
 
 const val PROMPT = ">> "

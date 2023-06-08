@@ -1,4 +1,4 @@
-package interpreter
+package interpreter.`object`
 
 import interpreter.ast.BlockStatement
 import interpreter.ast.Identifier
