@@ -1,4 +1,4 @@
-package interpreter
+package interpreter.repl
 
 import Evaluator
 import interpreter.lexer.Lexer

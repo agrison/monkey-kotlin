@@ -1,4 +1,4 @@
-import interpreter.Repl
+import interpreter.repl.Repl
 
 fun main(args: Array<String>) {
     println("Hello ! This is the Monkey programming language!")
