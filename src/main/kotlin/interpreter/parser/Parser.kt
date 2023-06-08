@@ -99,13 +99,11 @@ class Parser(
     fun errors() = errors
 
     private fun peekError(t: TokenType) {
-        val msg = "expected next token to be ${t}, got ${peekToken.type} instead"
-        errors.add(msg)
+        errors.add("expected next token to be ${t}, got ${peekToken.type} instead")
     }
 
     private fun noPrefixParseFnError(t: TokenType) {
-        val msg = "no prefix parse function for $t found"
-        errors.add(msg)
+        errors.add("no prefix parse function for $t found")
     }
 
     fun parseProgram(): Program {
