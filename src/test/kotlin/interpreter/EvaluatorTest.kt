@@ -3,6 +3,7 @@ package interpreter
 import Evaluator
 import interpreter.lexer.Lexer
 import interpreter.`object`.*
+import interpreter.parser.Parser
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments

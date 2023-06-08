@@ -3,6 +3,7 @@ package interpreter
 import Evaluator
 import interpreter.lexer.Lexer
 import interpreter.`object`.Environment
+import interpreter.parser.Parser
 import java.util.*
 
 const val PROMPT = ">> "

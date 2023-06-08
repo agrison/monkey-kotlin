@@ -1,5 +1,6 @@
-package interpreter
+package interpreter.parser
 
+import interpreter.*
 import interpreter.ast.*
 import interpreter.lexer.Lexer
 import kotlin.Boolean
