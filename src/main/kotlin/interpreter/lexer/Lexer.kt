@@ -95,6 +95,14 @@ class Lexer(private val input: String, private var position: Int, private var re
         }
     }
 
+    private fun previousChar(): Char {
+        return if (readPosition - 2 >= input.length || readPosition - 2 < 0) {
+            '\u0000'
+        } else {
+            input[readPosition - 2]
+        }
+    }
+
     private fun readIdentifier(): String {
         val initial = position
         while (isLetter(ch)) {
@@ -123,14 +131,26 @@ class Lexer(private val input: String, private var position: Int, private var re
 
     private fun readString(): String {
         val initial = position + 1
+        var hasEscapements = false
         while (true) {
             readChar()
+            if (ch == '\\') {
+                hasEscapements = true
+            }
             if (ch == '"' || ch == '\u0000') {
-                break
+                if (previousChar() != '\\') {
+                    break
+                }
             }
         }
 
-        return input.substring(initial until position)
+        return if (hasEscapements) input.substring(initial until position)
+            .replace("\\\\", "\\")
+            .replace("\\\"", "\"")
+            .replace("\\t", "\t")
+            .replace("\\n", "\n")
+            .replace("\\r", "\\r")
+        else input.substring(initial until position)
     }
 
     private fun isLetter(ch: Char): Boolean {

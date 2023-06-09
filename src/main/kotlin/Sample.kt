@@ -7,7 +7,8 @@ fun main() {
     val env = Environment.newEnvironment()
 
     val input = """
-let name = "Monkey";
+let name = "M\ton\\k\"ey\nlol";
+puts(name);
 let age = 1;
 let inspirations = ["Scheme", "Lisp", "JavaScript", "Clojure"];
 let book = {
