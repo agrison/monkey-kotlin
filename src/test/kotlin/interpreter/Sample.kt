@@ -6,9 +6,7 @@ import interpreter.`object`.Environment
 import interpreter.parser.Parser
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayOutputStream
-import java.io.FileOutputStream
 import java.io.PrintStream
-import java.io.StringWriter
 
 class Sample {
     @Test

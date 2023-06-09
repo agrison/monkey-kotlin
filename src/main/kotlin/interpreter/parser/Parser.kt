@@ -243,7 +243,7 @@ class Parser(
         return InfixExpression(curToken, left, curToken.literal, parseExpression(precedence)!!)
     }
 
-    fun parseBoolean(): interpreter.ast.BooleanLiteral {
+    fun parseBoolean(): BooleanLiteral {
         return BooleanLiteral(curToken, curTokenIs(TRUE))
     }
 

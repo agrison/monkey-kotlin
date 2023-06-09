@@ -160,8 +160,4 @@ class Lexer(private val input: String, private var position: Int, private var re
     private fun isDigit(ch: Char): Boolean {
         return ch in '0'..'9'
     }
-
-    fun newToken(tokenType: TokenType, ch: Char): Token {
-        return Token(tokenType, ch.toString())
-    }
 }

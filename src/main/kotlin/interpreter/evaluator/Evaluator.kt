@@ -273,7 +273,7 @@ class Evaluator {
         return newError("identifier not found: ${node.value}")
     }
 
-    private fun isTruthy(obj: MonkeyObject): kotlin.Boolean {
+    private fun isTruthy(obj: MonkeyObject): Boolean {
         return when (obj) {
             NULL -> false
             TRUE -> true
@@ -286,7 +286,7 @@ class Evaluator {
         return MError(s)
     }
 
-    private fun isError(obj: MonkeyObject): kotlin.Boolean {
+    private fun isError(obj: MonkeyObject): Boolean {
         return obj.type() == ERROR_OBJ
     }
 
