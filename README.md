@@ -1,11 +1,12 @@
 ## Writing an interpreter in <strike>Go</strike> Kotlin
 
-I recently bought the book *Writing an interpreter in Go* by *Thorsten Ball*, and it was a great read.
-I had much fun, rediscovering things I learnt at University but in C with lexx/yacc and OCaml.
+I recently bought the bundle of books *Writing an interpreter in Go* and *Writing a compiler in Go* by *Thorsten Ball*, and it was a great read.
+
+I had much fun, rediscovering things I learnt at University but in C with lex/yacc and OCaml (ocamllex, ocamlyacc).
 
 So I took a chance at writing along the code in Kotlin while reading the book, so that we have a Monkey interpreter in Kotlin.
 
-I will also make some adaptations to the builtins functions and supporting doubles, Strings with escapement characters, etc.
+I have also made some adaptations to the builtins functions and supporting Doubles, Strings with escapement characters, String repeat, Array and Hash concatenations, etc.
 
 The code is here in this repository.
 
