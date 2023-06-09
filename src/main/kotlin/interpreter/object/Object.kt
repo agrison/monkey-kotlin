@@ -123,7 +123,7 @@ class Builtin(val fn: BuiltinFunction) : MonkeyObject {
 data class HashKey(val type: ObjectType, val value: Int)
 data class HashPair(val key: MonkeyObject, val value: MonkeyObject)
 
-data class Hash(val pairs: Map<HashKey, HashPair>) : MonkeyObject {
+data class MHash(val pairs: Map<HashKey, HashPair>) : MonkeyObject {
     override fun type() = HASH_OBJ
 
     override fun inspect(): String {

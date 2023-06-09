@@ -284,9 +284,9 @@ addTwo(2);"""
 	}"""
 
         val evaluated = testEval(input)
-        assert(evaluated is Hash) { "Eval didn't return hash." }
+        assert(evaluated is MHash) { "Eval didn't return hash." }
 
-        val expected = Hash(
+        val expected = MHash(
             mutableMapOf(
                 MString("one").hashKey() to HashPair(MString("one"), MInteger(1)),
                 MString("two").hashKey() to HashPair(MString("two"), MInteger(2)),

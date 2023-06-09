@@ -159,7 +159,7 @@ class Evaluator {
             )
 
             (operator == "+" || operator == "-") && left.type() == HASH_OBJ && right.type() == HASH_OBJ -> evalHashInfixExpression(
-                operator, left as Hash, right as Hash
+                operator, left as MHash, right as MHash
             )
 
             operator == "==" -> MBoolean(left == right)
@@ -260,10 +260,10 @@ class Evaluator {
         }
     }
 
-    private fun evalHashInfixExpression(operator: String, left: Hash, right: Hash): MonkeyObject {
+    private fun evalHashInfixExpression(operator: String, left: MHash, right: MHash): MonkeyObject {
         return when (operator) {
-            "+" -> Hash(left.pairs + right.pairs)
-            "-" -> Hash(left.pairs - right.pairs.keys)
+            "+" -> MHash(left.pairs + right.pairs)
+            "-" -> MHash(left.pairs - right.pairs.keys)
             else -> newError("unknown operator: ${left.type()} $operator ${right.type()}")
         }
     }
@@ -366,7 +366,7 @@ class Evaluator {
                 index as MInteger
             )
 
-            left.type() == HASH_OBJ -> evalHashIndexExpression(left as Hash, index)
+            left.type() == HASH_OBJ -> evalHashIndexExpression(left as MHash, index)
             else -> newError("index operator not supported: ${left.type()}")
         }
     }
@@ -398,10 +398,10 @@ class Evaluator {
             pairs[hashed] = HashPair(key, value)
         }
 
-        return Hash(pairs)
+        return MHash(pairs)
     }
 
-    private fun evalHashIndexExpression(hash: Hash, index: MonkeyObject): MonkeyObject {
+    private fun evalHashIndexExpression(hash: MHash, index: MonkeyObject): MonkeyObject {
         if (index !is Hashable) {
             return newError("unusable as hash key: ${index.type()}")
         }
