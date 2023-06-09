@@ -71,7 +71,9 @@ let map = fn(arr, f) {
 };
 
 let numbers = [1.0, 1 + 1, 4 - 1, 2 * 2, 2 + 3] + [12 / 2, 17.0];
-puts(map(numbers, fibonacci));
+let fib = map(numbers, fibonacci);
+puts(fib);
+puts(fib[2..4]);
 ```
 
 #### Output
@@ -81,6 +83,7 @@ M	on\k"ey
     is kool
 Thorsten Ball - Writing A Compiler In Go
 [1, 1, 2, 3, 5, 8, 1597]
+[2, 3, 5]
 ```
 
 ## Structure
