@@ -154,6 +154,14 @@ class Evaluator {
                 right
             )
 
+            (operator == "+" || operator == "-") && left.type() == ARRAY_OBJ && right.type() == ARRAY_OBJ -> evalArrayInfixExpression(
+                operator, left as MArray, right as MArray
+            )
+
+            (operator == "+" || operator == "-") && left.type() == HASH_OBJ && right.type() == HASH_OBJ -> evalHashInfixExpression(
+                operator, left as Hash, right as Hash
+            )
+
             operator == "==" -> MBoolean(left == right)
             operator == "!=" -> MBoolean(left != right)
             left.type() != right.type() -> newError("type mismatch: ${left.type()} $operator ${right.type()}")
@@ -240,6 +248,22 @@ class Evaluator {
             ">" -> MBoolean(leftVal > rightVal)
             "==" -> MBoolean(leftVal == rightVal)
             "!=" -> MBoolean(leftVal != rightVal)
+            else -> newError("unknown operator: ${left.type()} $operator ${right.type()}")
+        }
+    }
+
+    private fun evalArrayInfixExpression(operator: String, left: MArray, right: MArray): MonkeyObject {
+        return when (operator) {
+            "+" -> MArray(left.elements + right.elements)
+            "-" -> MArray(left.elements - right.elements)
+            else -> newError("unknown operator: ${left.type()} $operator ${right.type()}")
+        }
+    }
+
+    private fun evalHashInfixExpression(operator: String, left: Hash, right: Hash): MonkeyObject {
+        return when (operator) {
+            "+" -> Hash(left.pairs + right.pairs)
+            "-" -> Hash(left.pairs - right.pairs.keys)
             else -> newError("unknown operator: ${left.type()} $operator ${right.type()}")
         }
     }
