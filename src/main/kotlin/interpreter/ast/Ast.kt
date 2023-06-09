@@ -105,6 +105,12 @@ class DoubleLiteral(private val token: Token, val value: Double) : Expression {
     override fun toString() = token.literal
 }
 
+class RangeLiteral(private val token: Token, val value: IntRange) : Expression {
+    override fun tokenLiteral() = token.literal
+
+    override fun toString() = token.literal
+}
+
 class PrefixExpression(private val token: Token, val operator: String, val right: Expression) : Expression {
     override fun tokenLiteral() = token.literal
 

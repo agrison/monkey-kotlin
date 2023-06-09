@@ -18,7 +18,6 @@ class Lexer(private val input: String, private var position: Int, private var re
         val tok: Token
 
         skipWhitespace()
-
         when (ch) {
             '=' -> {
                 tok = if (peekChar() == '=') {
@@ -58,13 +57,21 @@ class Lexer(private val input: String, private var position: Int, private var re
             '"' -> tok = Token(STRING, readString())
             '[' -> tok = Token(LBRACKET, ch)
             ']' -> tok = Token(RBRACKET, ch)
+            '.' -> {
+                tok = if (peekChar() == '.') {
+                    readChar()
+                    Token(DOT_DOT, "..")
+                } else {
+                    Token(ILLEGAL, ch)
+                }
+            }
             '\u0000' -> tok = Token(EOF, "")
             else -> {
                 if (isLetter(ch)) {
                     val ident = readIdentifier()
                     return Token(lookupIdent(ident), ident)
                 } else if (isDigit(ch)) {
-                    return readNumber()
+                    return readNumberOrRange()
                 } else {
                     tok = Token(ILLEGAL, ch)
                 }
@@ -111,22 +118,35 @@ class Lexer(private val input: String, private var position: Int, private var re
         return input.substring(initial until position)
     }
 
-    private fun readNumber(): Token {
+    private fun readNumberOrRange(): Token {
         val initial = position
         var isInt = true
+        var isRange = false
         while (isDigit(ch)) {
             readChar()
         }
         if (ch == '.') {
-            isInt = false
-            readChar()
-            while (isDigit(ch)) {
+            if (peekChar() == '.') { // this is a range
+                isInt = false
+                isRange = true
                 readChar()
+                readChar()
+                skipWhitespace()
+                while (isDigit(ch)) {
+                    readChar()
+                }
+            } else {
+                isInt = false
+                readChar()
+                while (isDigit(ch)) {
+                    readChar()
+                }
             }
         }
 
         return if (isInt) Token(INT, input.substring(initial until position))
-        else Token(DOUBLE, input.substring(initial until position))
+        else if (!isRange) Token(DOUBLE, input.substring(initial until position))
+        else Token(DOT_DOT, input.substring(initial until position))
     }
 
     private fun readString(): String {

@@ -7,16 +7,18 @@ import kotlin.Boolean
 
 const val LOWEST = 0
 const val EQUALS = 1        // ==
-const val LESS_GREATER = 2  // > or <
-const val SUM = 3           // +
-const val PRODUCT = 4       // *
-const val PREFIX = 5        // -X or !X
-const val CALL = 6          // myFunction(X)
-const val INDEX = 7         // array[index]
+const val RANGE = 2        // ..
+const val LESS_GREATER = 3  // > or <
+const val SUM = 4           // +
+const val PRODUCT = 5       // *
+const val PREFIX = 6        // -X or !X
+const val CALL = 7          // myFunction(X)
+const val INDEX = 8         // array[index]
 
 val precedences = mapOf(
     EQ to EQUALS,
     NOT_EQ to EQUALS,
+    DOT_DOT to RANGE,
     LT to LESS_GREATER,
     GT to LESS_GREATER,
     PLUS to SUM,
@@ -54,6 +56,7 @@ class Parser(
                 FUNCTION to Parser::parseFunctionLiteral,
                 LBRACKET to Parser::parseArrayLiteral,
                 LBRACE to Parser::parseHashLiteral,
+                DOT_DOT to Parser::parseRangeLiteral,
             )
             val infixParseFns = mapOf<TokenType, InfixParseFn>(
                 PLUS to Parser::parseInfixExpression,
@@ -64,6 +67,7 @@ class Parser(
                 NOT_EQ to Parser::parseInfixExpression,
                 LT to Parser::parseInfixExpression,
                 GT to Parser::parseInfixExpression,
+                DOT_DOT to Parser::parseInfixExpression,
                 LPAREN to Parser::parseCallExpression,
                 LBRACKET to Parser::parseIndexExpression,
             )
@@ -212,6 +216,16 @@ class Parser(
             IntegerLiteral(curToken, int)
         } catch (e: Exception) {
             errors.add("Could not parse ${curToken.literal} as integer")
+            null
+        }
+    }
+
+    fun parseRangeLiteral(): Expression? {
+        return try {
+            val ints = curToken.literal.split("..").map { it.toInt() }
+            RangeLiteral(curToken, ints[0] .. ints[1])
+        } catch (e: Exception) {
+            errors.add("Could not parse ${curToken.literal} as range")
             null
         }
     }

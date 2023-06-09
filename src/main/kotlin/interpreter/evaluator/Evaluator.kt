@@ -2,6 +2,7 @@ package interpreter.evaluator
 
 import interpreter.ast.BooleanLiteral
 import interpreter.`object`.*
+import interpreter.token.DOT_DOT
 
 val NULL = MNull()
 val TRUE = MBoolean(true)
@@ -33,6 +34,7 @@ class Evaluator {
             is interpreter.ast.IntegerLiteral -> MInteger(node.value)
             is interpreter.ast.DoubleLiteral -> MDouble(node.value)
             is interpreter.ast.StringLiteral -> MString(node.value)
+            is interpreter.ast.RangeLiteral -> MRange(node.value)
             is BooleanLiteral -> MBoolean(node.value)
             is interpreter.ast.PrefixExpression -> {
                 val right = eval(node.right, env)
@@ -162,6 +164,10 @@ class Evaluator {
                 operator, left as MHash, right as MHash
             )
 
+            operator == DOT_DOT && left.type() == INTEGER_OBJ && right.type() == INTEGER_OBJ -> {
+                MRange((left as MInteger).value..(right as MInteger).value)
+            }
+
             operator == "==" -> MBoolean(left == right)
             operator == "!=" -> MBoolean(left != right)
             left.type() != right.type() -> newError("type mismatch: ${left.type()} $operator ${right.type()}")
@@ -232,6 +238,7 @@ class Evaluator {
             ">" -> MBoolean(leftVal > rightVal)
             "==" -> MBoolean(leftVal == rightVal)
             "!=" -> MBoolean(leftVal != rightVal)
+            ".." -> MRange(leftVal..rightVal)
             else -> newError("unknown operator: ${left.type()} $operator ${right.type()}")
         }
     }
@@ -365,6 +372,10 @@ class Evaluator {
                 left as MArray,
                 index as MInteger
             )
+            left.type() == ARRAY_OBJ && index.type() == RANGE_OBJ -> evalArrayIndexExpression(
+                left as MArray,
+                index as MRange
+            )
 
             left.type() == HASH_OBJ -> evalHashIndexExpression(left as MHash, index)
             else -> newError("index operator not supported: ${left.type()}")
@@ -377,6 +388,14 @@ class Evaluator {
         }
 
         return array.elements[index.value]
+    }
+
+    private fun evalArrayIndexExpression(array: MArray, index: MRange): MonkeyObject {
+        if (index.value.first < 0 || index.value.last + 1 > array.elements.size - 1) {
+            return NULL
+        }
+
+        return MArray(array.elements.subList(index.value.first, index.value.last + 1))
     }
 
     private fun evalHashLiteral(node: interpreter.ast.HashLiteral, env: Environment): MonkeyObject {

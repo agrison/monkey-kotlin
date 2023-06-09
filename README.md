@@ -6,7 +6,20 @@ I had much fun, rediscovering things I learnt at University but in C with lex/ya
 
 So I took a chance at writing along the code in Kotlin while reading the book, so that we have a Monkey interpreter in Kotlin.
 
-I have also made some adaptations to the builtins functions and supporting Doubles, Strings with escapement characters, String repeat, Array and Hash concatenations, etc.
+I have also made some adaptations to the builtins functions and supporting:
+- Doubles (`3.14`)
+- Strings with escapement characters (`\n`, `\t`, `\r`, `\\`)
+- String repeat (`"a" * 3`)
+- Array and Hash concatenations (`[0] + [1]`, `{a: 1} + {b: 2}`)
+- Ranges (`0..4`, `[0, 1, 2, 3, 4][1..2] == [1, 2]`).
+
+I'd like to implement:
+- negative indexing
+- `for`/`while` loops (including `break`/`continue`)
+- infix `if` called when / or similarly unless
+- more operators (in (contains), mod, <=, >=, etc)
+- macro system from the book
+- ...
 
 The code is here in this repository.
 

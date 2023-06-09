@@ -2,6 +2,7 @@ package interpreter.`object`
 
 import interpreter.ast.BlockStatement
 import interpreter.ast.Identifier
+import interpreter.parser.RANGE
 import kotlin.Boolean
 
 typealias ObjectType = String
@@ -11,6 +12,7 @@ const val ERROR_OBJ = "ERROR"
 const val INTEGER_OBJ = "INTEGER"
 const val DOUBLE_OBJ = "DOUBLE"
 const val BOOLEAN_OBJ = "BOOLEAN"
+const val RANGE_OBJ = "RANGE"
 const val RETURN_VALUE_OBJ = "RETURN_VALUE"
 const val FUNCTION_OBJ = "FUNCTION"
 const val NON_INITALIZED_OBJ = "NON_INITIALIZED"
@@ -50,6 +52,14 @@ data class MBoolean(val value: Boolean) : MonkeyObject, Hashable {
     override fun inspect() = "$value"
 
     override fun hashKey() = HashKey(type(), if (value) 1 else 0)
+}
+
+data class MRange(val value: IntRange) : MonkeyObject, Hashable {
+    override fun type() = RANGE_OBJ
+
+    override fun inspect() = "$value"
+
+    override fun hashKey() = HashKey(type(), value.hashCode())
 }
 
 class MNull : MonkeyObject {

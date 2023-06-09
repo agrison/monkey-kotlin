@@ -18,6 +18,7 @@ const val MINUS = "-"
 const val BANG = "!"
 const val ASTERISK = "*"
 const val SLASH = "/"
+const val DOT_DOT = ".."
 
 const val LT = "<"
 const val GT = ">"
