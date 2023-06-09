@@ -1,6 +1,6 @@
 ## Writing an interpreter in <strike>Go</strike> Kotlin
 
-I recently bought the bundle of books *Writing an interpreter in Go* and *Writing a compiler in Go* by *Thorsten Ball*, and it was a great read.
+I recently bought the bundle of books [*Writing an interpreter in Go* and *Writing a compiler in Go*](https://compilerbook.com/) by *Thorsten Ball*, and it was a great read.
 
 I had much fun, rediscovering things I learnt at University but in C with lex/yacc and OCaml (ocamllex, ocamlyacc).
 
