@@ -1,12 +1,21 @@
+package interpreter
+
 import interpreter.evaluator.Evaluator
 import interpreter.lexer.Lexer
 import interpreter.`object`.Environment
 import interpreter.parser.Parser
+import org.junit.jupiter.api.Test
+import java.io.ByteArrayOutputStream
+import java.io.FileOutputStream
+import java.io.PrintStream
+import java.io.StringWriter
 
-fun main() {
-    val env = Environment.newEnvironment()
+class Sample {
+    @Test
+    fun testSampleCode() {
+        val env = Environment.newEnvironment()
 
-    val input = """
+        val input = """
 let name = "M\ton\\k\"ey\nlol";
 puts(name);
 let age = 1;
@@ -51,16 +60,18 @@ let numbers = [1.0, 1 + 1, 4 - 1, 2 * 2, 2 + 3, 12 / 2, 17.0];
 map(numbers, fibonacci);
 
 """
+        val b = ByteArrayOutputStream()
+        System.setOut(PrintStream(b))
+        val lexer = Lexer.new(input)
+        val parser = Parser.new(lexer)
 
-    val lexer = Lexer.new(input)
-    val parser = Parser.new(lexer)
+        val program = parser.parseProgram()
+        if (parser.errors().isNotEmpty()) {
+            println(parser.errors)
+        }
 
-    val program = parser.parseProgram()
-    if (parser.errors().isNotEmpty()) {
-        println(parser.errors)
+        val evaluated = Evaluator().eval(program, env)
+        assert(evaluated.inspect() == "[1, 1, 2, 3, 5, 8, 1597]")
+        assert(b.toString() == "M\ton\\k\"ey\nlol${System.lineSeparator()}Thorsten Ball - Writing A Compiler In Go${System.lineSeparator()}")
     }
-
-    val evaluated = Evaluator().eval(program, env)
-    println(evaluated.inspect())
 }
-
