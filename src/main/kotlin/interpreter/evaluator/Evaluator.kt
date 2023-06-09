@@ -3,6 +3,7 @@ package interpreter.evaluator
 import interpreter.ast.BooleanLiteral
 import interpreter.`object`.*
 import interpreter.token.DOT_DOT
+import kotlin.math.absoluteValue
 
 val NULL = MNull()
 val TRUE = MBoolean(true)
@@ -383,8 +384,12 @@ class Evaluator {
     }
 
     private fun evalArrayIndexExpression(array: MArray, index: MInteger): MonkeyObject {
-        if (index.value < 0 || index.value > array.elements.size - 1) {
+        if (index.value > array.elements.size - 1 || (index.value < 0 && index.value.absoluteValue > array.elements.size)) {
             return NULL
+        }
+
+        if (index.value < 0) {
+            return array.elements[array.elements.size + index.value]
         }
 
         return array.elements[index.value]
