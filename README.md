@@ -1,4 +1,4 @@
-## Writing an interpreter in <strike>Go</strike> Kotlin
+## Writing an interpreter in <strike>Go</strike> Kotlin: Monktey
 
 I recently bought the bundle of books [*Writing an interpreter in Go*](https://interpreterbook.com/) and [*Writing a compiler in Go*](https://compilerbook.com/) by *Thorsten Ball*, and it was a great read.
 
