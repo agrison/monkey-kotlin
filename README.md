@@ -10,6 +10,66 @@ I have also made some adaptations to the builtins functions and supporting Doubl
 
 The code is here in this repository.
 
+## Sample
+
+```js
+let name = "M\ton\\k\"ey\n\tis kool";
+puts(name);
+let age = 1;
+let inspirations = ["Scheme", "Lisp", "JavaScript", "Clojure"];
+let prequel = {
+  "prequel": "Writing An Interpreter in Go"
+};
+let newBook = {
+  "title": "Writing A Compiler In Go",
+  "author": "Thorsten Ball",
+};
+let book = prequel + newBook;
+
+let printBookName = fn(book) {
+  let title = book["title"];
+  let author = book["author"];
+  puts(author + " - " + title);
+};
+printBookName(book);
+
+let fibonacci = fn(x) {
+  if (x == 0) {
+    0
+  } else {
+    if (x == 1) {
+      return 1;
+    } else {
+      fibonacci(x - 1) + fibonacci(x - 2);
+    }
+  }
+};
+
+let map = fn(arr, f) {
+  let iter = fn(arr, accumulated) {
+    if (len(arr) == 0) {
+      accumulated
+    } else {
+      iter(rest(arr), push(accumulated, f(first(arr))));
+    }
+  };
+
+  iter(arr, []);
+};
+
+let numbers = [1.0, 1 + 1, 4 - 1, 2 * 2, 2 + 3] + [12 / 2, 17.0];
+puts(map(numbers, fibonacci));
+```
+
+#### Output
+
+```text
+M	on\k"ey
+    is kool
+Thorsten Ball - Writing A Compiler In Go
+[1, 1, 2, 3, 5, 8, 1597]
+```
+
 ## Structure
 
 ```
