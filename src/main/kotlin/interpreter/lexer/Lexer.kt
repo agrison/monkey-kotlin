@@ -95,14 +95,6 @@ class Lexer(private val input: String, private var position: Int, private var re
         }
     }
 
-    private fun peekNextChar(): Char {
-        return if (readPosition + 1 >= input.length) {
-            '\u0000'
-        } else {
-            input[readPosition + 1]
-        }
-    }
-
     private fun readIdentifier(): String {
         val initial = position
         while (isLetter(ch)) {
