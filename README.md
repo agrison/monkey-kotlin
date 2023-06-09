@@ -28,5 +28,5 @@ The code is here in this repository.
 Tests are located in `src/test/kotlin`.
 
 ```
-Tests passed: 122 of 122 tests - 139ms
+Tests passed: 131 of 131 tests - 161ms
 ```
