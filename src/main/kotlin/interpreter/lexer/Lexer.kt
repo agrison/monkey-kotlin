@@ -65,6 +65,27 @@ class Lexer(private val input: String, private var position: Int, private var re
                     Token(GT, ch)
                 }
             }
+            '&' -> {
+                tok = if (peekChar() == '&') {
+                    val current = ch
+                    readChar()
+                    val literal = current.toString() + ch.toString()
+                    Token(BOOL_AND, literal)
+                } else {
+                    Token(ILLEGAL, ch)
+                }
+            }
+            '|' -> {
+                tok = if (peekChar() == '|') {
+                    val current = ch
+                    readChar()
+                    val literal = current.toString() + ch.toString()
+                    Token(BOOL_OR, literal)
+                } else {
+                    Token(ILLEGAL, ch)
+                }
+            }
+            '%' -> tok = Token(MODULO, ch)
             ';' -> tok = Token(SEMICOLON, ch)
             ':' -> tok = Token(COLON, ch)
             ',' -> tok = Token(COMMA, ch)

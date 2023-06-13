@@ -9,11 +9,13 @@ const val LOWEST = 0
 const val EQUALS = 1        // ==
 const val RANGE = 2        // ..
 const val LESS_GREATER = 3  // > or <
-const val SUM = 4           // +
-const val PRODUCT = 5       // *
-const val PREFIX = 6        // -X or !X
-const val CALL = 7          // myFunction(X)
-const val INDEX = 8         // array[index]
+const val BOOL_OPS = 4
+const val SUM = 5           // + and -
+const val PRODUCT = 6       // * and /
+const val MOD = 7
+const val PREFIX = 8        // -X or !X
+const val CALL = 9          // myFunction(X)
+const val INDEX = 10         // array[index]
 
 val precedences = mapOf(
     EQ to EQUALS,
@@ -25,6 +27,9 @@ val precedences = mapOf(
     GTE to LESS_GREATER,
     PLUS to SUM,
     MINUS to SUM,
+    MODULO to MOD,
+    BOOL_AND to BOOL_OPS,
+    BOOL_OR to BOOL_OPS,
     SLASH to PRODUCT,
     ASTERISK to PRODUCT,
     LPAREN to CALL,
@@ -66,6 +71,9 @@ class Parser(
                 MINUS to Parser::parseInfixExpression,
                 SLASH to Parser::parseInfixExpression,
                 ASTERISK to Parser::parseInfixExpression,
+                MODULO to Parser::parseInfixExpression,
+                BOOL_AND to Parser::parseInfixExpression,
+                BOOL_OR to Parser::parseInfixExpression,
                 EQ to Parser::parseInfixExpression,
                 NOT_EQ to Parser::parseInfixExpression,
                 LT to Parser::parseInfixExpression,

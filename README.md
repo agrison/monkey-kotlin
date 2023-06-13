@@ -9,8 +9,12 @@ So I took a chance at writing along the code in Kotlin while reading the book, s
 I have also made some adaptations to the builtins functions and supporting:
 - Doubles (`3.14`)
 - Strings with escapement characters (`\n`, `\t`, `\r`, `\\`)
-- String repeat (`"a" * 3`)
-- Array and Hash concatenations (`[0] + [1]`, `{a: 1} + {b: 2}`)
+- Additional operators
+  - String repeat (`"a" * 3`)
+  - Array and Hash concatenations (`[0] + [1]`, `{a: 1} + {b: 2}`)
+  - `<=` and `>=`
+  - `&&` and `||`
+  - `%`
 - Ranges (`0..4`, `[0, 1, 2, 3, 4][1..2] == [1, 2]`)
 - Negative indexing (`[0, 1, 2, 3, 4][-1] == 4`)
 - while loops: (`let x = 0; while (x < 3) { puts("hello"); let x = x + 1; }`)
@@ -19,7 +23,7 @@ I have also made some adaptations to the builtins functions and supporting:
 I'd like to implement:
 - `for` loops (including `break`/`continue`)
 - infix `if` called when / or similarly unless
-- more operators (in (contains), mod, <=, >=, etc)
+- more operators (in (contains), etc)
 - macro system from the book
 - ...
 

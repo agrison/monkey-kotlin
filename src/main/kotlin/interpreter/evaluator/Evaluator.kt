@@ -158,6 +158,11 @@ class Evaluator {
                 right
             )
 
+            left.type() == BOOLEAN_OBJ && right.type() == BOOLEAN_OBJ && operator == "&&" ->
+                MBoolean((left as MBoolean).value && (right as MBoolean).value)
+            left.type() == BOOLEAN_OBJ && right.type() == BOOLEAN_OBJ && operator == "||" ->
+                MBoolean((left as MBoolean).value || (right as MBoolean).value)
+
             (operator == "+" || operator == "-") && left.type() == ARRAY_OBJ && right.type() == ARRAY_OBJ -> evalArrayInfixExpression(
                 operator, left as MArray, right as MArray
             )
@@ -238,6 +243,7 @@ class Evaluator {
             "-" -> MInteger(leftVal - rightVal)
             "*" -> MInteger(leftVal * rightVal)
             "/" -> MInteger(leftVal / rightVal)
+            "%" -> MInteger(leftVal % rightVal)
             "<" -> MBoolean(leftVal < rightVal)
             ">" -> MBoolean(leftVal > rightVal)
             "==" -> MBoolean(leftVal == rightVal)
