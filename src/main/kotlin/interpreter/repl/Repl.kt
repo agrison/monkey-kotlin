@@ -4,23 +4,25 @@ import interpreter.evaluator.Evaluator
 import interpreter.lexer.Lexer
 import interpreter.`object`.Environment
 import interpreter.parser.Parser
-import java.util.*
 
 const val PROMPT = ">> "
 
 class Repl {
     fun start() {
-        val keyboard = Scanner(System.`in`)
         val env = Environment.newEnvironment()
+        val buffer = StringBuilder()
 
         while (true) {
-            print(PROMPT)
-            val scanned = keyboard.nextLine()
-            if (scanned == ":q") {
-                return
+            print(if (!buffer.contains("\n")) PROMPT else "...\t")
+            val scanned = readln()
+            buffer.append(scanned + "\n")
+
+            // this is not the proper way of doing, but for the time being it's probably sufficient :)
+            if (buffer.count { it in charArrayOf('(', '{', '[') } != buffer.count { it in charArrayOf(')', '}', ']') }) {
+                continue
             }
 
-            val lexer = Lexer.new(scanned)
+            val lexer = Lexer.new(buffer.toString())
             val parser = Parser.new(lexer)
 
             val program = parser.parseProgram()
@@ -31,6 +33,7 @@ class Repl {
 
             val evaluated = Evaluator().eval(program, env)
             println(evaluated.inspect())
+            buffer.clear()
         }
     }
 
