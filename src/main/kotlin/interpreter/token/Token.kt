@@ -21,7 +21,9 @@ const val SLASH = "/"
 const val DOT_DOT = ".."
 
 const val LT = "<"
+const val LTE = "<="
 const val GT = ">"
+const val GTE = ">="
 
 const val EQ = "=="
 const val NOT_EQ = "!="

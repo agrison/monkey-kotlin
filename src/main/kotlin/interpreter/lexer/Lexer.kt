@@ -45,8 +45,26 @@ class Lexer(private val input: String, private var position: Int, private var re
 
             '/' -> tok = Token(SLASH, ch)
             '*' -> tok = Token(ASTERISK, ch)
-            '<' -> tok = Token(LT, ch)
-            '>' -> tok = Token(GT, ch)
+            '<' -> {
+                tok = if (peekChar() == '=') {
+                    val current = ch
+                    readChar()
+                    val literal = current.toString() + ch.toString()
+                    Token(LTE, literal)
+                } else {
+                    Token(LT, ch)
+                }
+            }
+            '>' -> {
+                tok = if (peekChar() == '=') {
+                    val current = ch
+                    readChar()
+                    val literal = current.toString() + ch.toString()
+                    Token(GTE, literal)
+                } else {
+                    Token(GT, ch)
+                }
+            }
             ';' -> tok = Token(SEMICOLON, ch)
             ':' -> tok = Token(COLON, ch)
             ',' -> tok = Token(COMMA, ch)

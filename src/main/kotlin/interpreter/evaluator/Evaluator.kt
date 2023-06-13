@@ -223,6 +223,8 @@ class Evaluator {
             ">" -> MBoolean(leftVal > rightVal)
             "==" -> MBoolean(leftVal == rightVal)
             "!=" -> MBoolean(leftVal != rightVal)
+            "<=" -> MBoolean(leftVal <= rightVal)
+            ">=" -> MBoolean(leftVal >= rightVal)
             else -> newError("unknown operator: ${left.type()} $operator ${right.type()}")
         }
     }
@@ -241,6 +243,8 @@ class Evaluator {
             "==" -> MBoolean(leftVal == rightVal)
             "!=" -> MBoolean(leftVal != rightVal)
             ".." -> MRange(leftVal..rightVal)
+            "<=" -> MBoolean(leftVal <= rightVal)
+            ">=" -> MBoolean(leftVal >= rightVal)
             else -> newError("unknown operator: ${left.type()} $operator ${right.type()}")
         }
     }
@@ -257,6 +261,8 @@ class Evaluator {
             ">" -> MBoolean(leftVal > rightVal)
             "==" -> MBoolean(leftVal == rightVal)
             "!=" -> MBoolean(leftVal != rightVal)
+            "<=" -> MBoolean(leftVal <= rightVal)
+            ">=" -> MBoolean(leftVal >= rightVal)
             else -> newError("unknown operator: ${left.type()} $operator ${right.type()}")
         }
     }
