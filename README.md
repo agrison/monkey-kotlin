@@ -13,9 +13,11 @@ I have also made some adaptations to the builtins functions and supporting:
 - Array and Hash concatenations (`[0] + [1]`, `{a: 1} + {b: 2}`)
 - Ranges (`0..4`, `[0, 1, 2, 3, 4][1..2] == [1, 2]`)
 - Negative indexing (`[0, 1, 2, 3, 4][-1] == 4`)
+- while loops: (`let x = 0; while (x < 3) { puts("hello"); let x = x + 1; }`)
+  - no support for `break`/`continue` yet
 
 I'd like to implement:
-- `for`/`while` loops (including `break`/`continue`)
+- `for` loops (including `break`/`continue`)
 - infix `if` called when / or similarly unless
 - more operators (in (contains), mod, <=, >=, etc)
 - macro system from the book

@@ -60,6 +60,7 @@ class Evaluator {
             }
 
             is interpreter.ast.IfExpression -> evalIfExpression(node, env)
+            is interpreter.ast.WhileExpression -> evalWhileExpression(node, env)
             is interpreter.ast.Identifier -> evalIdentifier(node, env)
             is interpreter.ast.FunctionLiteral -> MFunction(node.parameters, node.body, env)
             is interpreter.ast.CallExpression -> {
@@ -289,6 +290,23 @@ class Evaluator {
         } else {
             NULL
         }
+    }
+
+    private fun evalWhileExpression(we: interpreter.ast.WhileExpression, env: Environment): MonkeyObject {
+        var condition = eval(we.condition, env)
+        if (isError(condition)) {
+            return condition
+        }
+
+        while (isTruthy(condition)) {
+            eval(we.consequence, env)
+            condition = eval(we.condition, env)
+            if (isError(condition)) {
+                return condition
+            }
+        }
+
+        return NULL
     }
 
     private fun evalIdentifier(node: interpreter.ast.Identifier, env: Environment): MonkeyObject {

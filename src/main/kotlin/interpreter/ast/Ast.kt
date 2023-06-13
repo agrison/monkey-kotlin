@@ -169,6 +169,24 @@ class IfExpression(
     }
 }
 
+class WhileExpression(
+    private val token: Token,
+    val condition: Expression,
+    val consequence: BlockStatement,
+) :
+    Expression {
+    override fun tokenLiteral() = token.literal
+
+    override fun toString(): String {
+        return StringBuilder()
+            .append("while")
+            .append(condition)
+            .append(" ")
+            .append(consequence)
+            .toString()
+    }
+}
+
 class FunctionLiteral(private val token: Token, val parameters: List<Identifier>, val body: BlockStatement) : Expression {
     override fun tokenLiteral() = token.literal
 

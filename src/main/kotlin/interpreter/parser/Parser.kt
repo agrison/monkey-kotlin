@@ -53,6 +53,7 @@ class Parser(
                 FALSE to Parser::parseBoolean,
                 LPAREN to Parser::parseGroupedExpression,
                 IF to Parser::parseIfExpression,
+                WHILE to Parser::parseWhileExpression,
                 FUNCTION to Parser::parseFunctionLiteral,
                 LBRACKET to Parser::parseArrayLiteral,
                 LBRACE to Parser::parseHashLiteral,
@@ -296,6 +297,24 @@ class Parser(
         }
 
         return IfExpression(curToken, condition!!, consequence, alternative)
+    }
+
+    fun parseWhileExpression(): Expression? {
+        val curToken = curToken
+        if (!expectPeek(LPAREN)) {
+            return null
+        }
+
+        nextToken()
+        val condition = parseExpression(LOWEST)
+
+        if (!expectPeek(RPAREN) || !expectPeek(LBRACE)) {
+            return null
+        }
+
+        val consequence = parseBlockStatement()
+
+        return WhileExpression(curToken, condition!!, consequence)
     }
 
     private fun parseBlockStatement(): BlockStatement {

@@ -46,6 +46,7 @@ const val FALSE = "interpreter.getFALSE"
 const val IF = "IF"
 const val ELSE = "ELSE"
 const val RETURN = "RETURN"
+const val WHILE = "while"
 
 data class Token(val type: TokenType, val literal: String) {
     constructor(type: TokenType, literal: Char) : this(type, literal.toString())
@@ -58,7 +59,8 @@ val keywords = mapOf(
     "false" to FALSE,
     "if" to IF,
     "else" to ELSE,
-    "return" to RETURN
+    "return" to RETURN,
+    "while" to WHILE,
 )
 
 fun lookupIdent(ident: String): TokenType =
